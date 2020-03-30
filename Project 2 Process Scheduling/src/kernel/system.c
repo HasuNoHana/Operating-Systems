@@ -181,7 +181,7 @@ PUBLIC void sys_task()
 	    case SYS_SYSCTL:	r = do_sysctl(&m);	break;
 	    case SYS_PUTS:	r = do_puts(&m);	break;
 	    case SYS_FINDPROC:	r = do_findproc(&m);	break;
-      case SYS_SETPRI:	r = do_findproc(&m);	break;
+      case SYS_SETPRI:	r = do_setpri(&m);	break;
 	    default:		r = E_BAD_FCN;
 	}
 
@@ -204,17 +204,19 @@ PUBLIC void sys_task()
 PRIVATE int do_setpri(message *m_ptr) {
   register struct proc *tmp;
 
-  MAX_AGE = (m_ptr->m1_i1 == 2) ? m_ptr->m1_i2 : MAX_AGE;
-  MIN_PRI = (m_ptr->m1_i1 == 3) ? m_ptr->m1_i2 : MIN_PRI;
+  MAX_AGE = (m_ptr->m1_i1 == 2) ? m_ptr->m1_i2 : MAX_AGE; /* update MAX_AGE if NR == 1 */
+  MIN_PRI = (m_ptr->m1_i1 == 3) ? m_ptr->m1_i2 : MIN_PRI; /* update MIN_PRI if NR == 3 */
 
+  /* if NR == 1 or NR == 3 job is done */
   if (m_ptr->m1_i1 == 2 || m_ptr->m1_i1 == 3)
     return(OK);
 
+  /* find process with given PID */
   for(tmp = BEG_USER_ADDR; tmp < END_PROC_ADDR; ++tmp)
     if (tmp->p_pid == m_ptr->m1_i3) break;
   
-  tmp->ACT_PRI = (m_ptr->m1_i1 == 1) ? m_ptr->m1_i2 : tmp->ACT_PRI;
-  tmp->p_type = (m_ptr->m1_i1 == 4) ? m_ptr->m1_i2 : tmp->p_type;
+  tmp->ACT_PRI = (m_ptr->m1_i1 == 1) ? m_ptr->m1_i2 : tmp->ACT_PRI; /* update ACT_PRI if NR == 1 */
+  tmp->p_type = (m_ptr->m1_i1 == 4) ? m_ptr->m1_i2 : tmp->p_type;   /* update type if NR == 4 */
   return(OK);
 }
 
@@ -263,6 +265,9 @@ register message *m_ptr;	/* pointer to request message */
   rpc->sys_time = 0;
   rpc->child_utime = 0;
   rpc->child_stime = 0;
+
+  rpc->p_type = rpp->p_type; /* child type equals parent type */
+  rpc->BASE_PRI = rpc->ACT_PRI = rpp->BASE_PRI;
 
   return(OK);
 }

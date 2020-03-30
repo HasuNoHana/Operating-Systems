@@ -69,7 +69,6 @@ struct proc {
 #define NORMAL 1
 #define INTERACTIVE 2
 #define DEFAULT_TYPE BATCH
-#define TYPE_NUMBER 3
 
 /* Guard word for task stacks. */
 #define STACK_GUARD	((reg_t) (sizeof(reg_t) == 2 ? 0xBEEF : 0xDEADBEEF))
