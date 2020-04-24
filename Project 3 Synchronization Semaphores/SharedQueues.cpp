@@ -3,7 +3,7 @@
 #include <iterator>
 
 SharedQueues::SharedQueues(size_t queueSize)
-    : queues { SyncQueue(queueSize), SyncQueue(queueSize) }
+    : queues { SyncQueue(queueSize, 0), SyncQueue(queueSize, 1) }
 { }
 
 void SharedQueues::produce(size_t queueNr, SyncQueue::message m) {

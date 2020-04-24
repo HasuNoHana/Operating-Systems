@@ -16,7 +16,7 @@ public:
         friend std::ostream& operator<<(std::ostream& os, const message& m);
     };
 
-    SyncQueue(size_t queueSize);
+    SyncQueue(size_t queueSize, int queueID);
     ~SyncQueue();
     void produce(message m);
     void consume(bool randomChoice, size_t index);
@@ -24,6 +24,7 @@ public:
 
 private:
     std::list<message> queue;
+    int queueID;
     int readersCounter = 0;
     
     sem_t full;

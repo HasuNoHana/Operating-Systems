@@ -4,7 +4,8 @@
 
 #include "Random.hpp"
 
-SyncQueue::SyncQueue(size_t queueSize) {
+SyncQueue::SyncQueue(size_t queueSize, int _queueID) {
+    queueID = _queueID;
     sem_init(&full, 0, 0);
     sem_init(&empty, 0, queueSize);
     sem_init(&mutexEntry, 0, 1);
@@ -54,7 +55,7 @@ const void SyncQueue::read() {
     
     sem_post(&mutexCounter);
 
-    std::cout << "Reader:\nReading messages from queue: " << std::endl;
+    std::cout << "Reader:\nReading messages from queue: " << queueID << std::endl;
     for (auto m : queue)
         std::cout << m;
     std::cout << std::endl;
