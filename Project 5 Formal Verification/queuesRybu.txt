@@ -1,0 +1,76 @@
+const BUFFER_SIZE = 4;
+
+server semaphoreM {
+  var state : 0..BUFFER_SIZE;
+  { p | state > 0 } -> { state = state - 1; return :ok; }
+  { v | state < BUFFER_SIZE } -> { state = state + 1; return :ok; }
+}
+
+server buffer {
+  var count : 0..BUFFER_SIZE;
+
+   { produce | count < BUFFER_SIZE } ->
+    { count = count + 1; return :ok; }
+
+  { consume | count > 0 } ->
+    { count = count - 1; return :ok; }
+
+}
+
+var mutexA = semaphoreM() { state = 1 };
+var mutexB = semaphoreM() { state = 1 };
+var emptyA = semaphoreM() { state = BUFFER_SIZE };
+var emptyB = semaphoreM() { state = BUFFER_SIZE };
+var fullA = semaphoreM() { state = 0 };
+var fullB = semaphoreM() { state = 0 };
+
+var bufferA = buffer() { count = 0 };
+var bufferB = buffer() { count = 0 };
+
+thread consumer() {
+  loop {
+    fullA.p();
+    mutexA.p();
+    bufferA.consume();
+    mutexA.v();
+    emptyA.v();
+
+    fullB.p();
+    mutexB.p();
+    bufferB.consume();
+    mutexB.v();
+    emptyB.v();
+  }
+}
+
+thread producer() {
+  loop {
+    emptyA.p();
+    mutexA.p();
+    bufferA.produce();
+    mutexA.v();
+    fullA.v();
+
+    emptyB.p();
+    mutexB.p();
+    bufferB.produce();
+    mutexB.v();
+    fullB.v();
+  }
+}
+
+thread readerA() {
+  loop {
+    mutexA.p();
+    --read
+    mutexA.v();
+  }
+}
+
+thread readerB() {
+  loop {
+    mutexB.p();
+    --read
+    mutexB.v();
+  }
+}

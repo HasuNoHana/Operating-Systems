@@ -1,0 +1,131 @@
+server: semaphoreM (servers S_consumer, S_producer, S_readerA, S_readerB; agents A_consumer, A_producer, A_readerA, A_readerB),
+services {p, v},
+states {state_0, state_1, state_2, state_3, state_4},
+actions {
+  {A_consumer.semaphoreM.p, semaphoreM.state_1} -> {A_consumer.S_consumer.ok, semaphoreM.state_0},
+  {A_consumer.semaphoreM.p, semaphoreM.state_2} -> {A_consumer.S_consumer.ok, semaphoreM.state_1},
+  {A_consumer.semaphoreM.p, semaphoreM.state_3} -> {A_consumer.S_consumer.ok, semaphoreM.state_2},
+  {A_consumer.semaphoreM.p, semaphoreM.state_4} -> {A_consumer.S_consumer.ok, semaphoreM.state_3},
+  {A_consumer.semaphoreM.v, semaphoreM.state_0} -> {A_consumer.S_consumer.ok, semaphoreM.state_1},
+  {A_consumer.semaphoreM.v, semaphoreM.state_1} -> {A_consumer.S_consumer.ok, semaphoreM.state_2},
+  {A_consumer.semaphoreM.v, semaphoreM.state_2} -> {A_consumer.S_consumer.ok, semaphoreM.state_3},
+  {A_consumer.semaphoreM.v, semaphoreM.state_3} -> {A_consumer.S_consumer.ok, semaphoreM.state_4},
+  {A_producer.semaphoreM.p, semaphoreM.state_1} -> {A_producer.S_producer.ok, semaphoreM.state_0},
+  {A_producer.semaphoreM.p, semaphoreM.state_2} -> {A_producer.S_producer.ok, semaphoreM.state_1},
+  {A_producer.semaphoreM.p, semaphoreM.state_3} -> {A_producer.S_producer.ok, semaphoreM.state_2},
+  {A_producer.semaphoreM.p, semaphoreM.state_4} -> {A_producer.S_producer.ok, semaphoreM.state_3},
+  {A_producer.semaphoreM.v, semaphoreM.state_0} -> {A_producer.S_producer.ok, semaphoreM.state_1},
+  {A_producer.semaphoreM.v, semaphoreM.state_1} -> {A_producer.S_producer.ok, semaphoreM.state_2},
+  {A_producer.semaphoreM.v, semaphoreM.state_2} -> {A_producer.S_producer.ok, semaphoreM.state_3},
+  {A_producer.semaphoreM.v, semaphoreM.state_3} -> {A_producer.S_producer.ok, semaphoreM.state_4},
+  {A_readerA.semaphoreM.p, semaphoreM.state_1} -> {A_readerA.S_readerA.ok, semaphoreM.state_0},
+  {A_readerA.semaphoreM.p, semaphoreM.state_2} -> {A_readerA.S_readerA.ok, semaphoreM.state_1},
+  {A_readerA.semaphoreM.p, semaphoreM.state_3} -> {A_readerA.S_readerA.ok, semaphoreM.state_2},
+  {A_readerA.semaphoreM.p, semaphoreM.state_4} -> {A_readerA.S_readerA.ok, semaphoreM.state_3},
+  {A_readerA.semaphoreM.v, semaphoreM.state_0} -> {A_readerA.S_readerA.ok, semaphoreM.state_1},
+  {A_readerA.semaphoreM.v, semaphoreM.state_1} -> {A_readerA.S_readerA.ok, semaphoreM.state_2},
+  {A_readerA.semaphoreM.v, semaphoreM.state_2} -> {A_readerA.S_readerA.ok, semaphoreM.state_3},
+  {A_readerA.semaphoreM.v, semaphoreM.state_3} -> {A_readerA.S_readerA.ok, semaphoreM.state_4},
+  {A_readerB.semaphoreM.p, semaphoreM.state_1} -> {A_readerB.S_readerB.ok, semaphoreM.state_0},
+  {A_readerB.semaphoreM.p, semaphoreM.state_2} -> {A_readerB.S_readerB.ok, semaphoreM.state_1},
+  {A_readerB.semaphoreM.p, semaphoreM.state_3} -> {A_readerB.S_readerB.ok, semaphoreM.state_2},
+  {A_readerB.semaphoreM.p, semaphoreM.state_4} -> {A_readerB.S_readerB.ok, semaphoreM.state_3},
+  {A_readerB.semaphoreM.v, semaphoreM.state_0} -> {A_readerB.S_readerB.ok, semaphoreM.state_1},
+  {A_readerB.semaphoreM.v, semaphoreM.state_1} -> {A_readerB.S_readerB.ok, semaphoreM.state_2},
+  {A_readerB.semaphoreM.v, semaphoreM.state_2} -> {A_readerB.S_readerB.ok, semaphoreM.state_3},
+  {A_readerB.semaphoreM.v, semaphoreM.state_3} -> {A_readerB.S_readerB.ok, semaphoreM.state_4},
+};
+
+server: buffer (servers S_consumer, S_producer, S_readerA, S_readerB; agents A_consumer, A_producer, A_readerA, A_readerB),
+services {produce, consume},
+states {count_0, count_1, count_2, count_3, count_4},
+actions {
+  {A_consumer.buffer.produce, buffer.count_0} -> {A_consumer.S_consumer.ok, buffer.count_1},
+  {A_consumer.buffer.produce, buffer.count_1} -> {A_consumer.S_consumer.ok, buffer.count_2},
+  {A_consumer.buffer.produce, buffer.count_2} -> {A_consumer.S_consumer.ok, buffer.count_3},
+  {A_consumer.buffer.produce, buffer.count_3} -> {A_consumer.S_consumer.ok, buffer.count_4},
+  {A_consumer.buffer.consume, buffer.count_1} -> {A_consumer.S_consumer.ok, buffer.count_0},
+  {A_consumer.buffer.consume, buffer.count_2} -> {A_consumer.S_consumer.ok, buffer.count_1},
+  {A_consumer.buffer.consume, buffer.count_3} -> {A_consumer.S_consumer.ok, buffer.count_2},
+  {A_consumer.buffer.consume, buffer.count_4} -> {A_consumer.S_consumer.ok, buffer.count_3},
+  {A_producer.buffer.produce, buffer.count_0} -> {A_producer.S_producer.ok, buffer.count_1},
+  {A_producer.buffer.produce, buffer.count_1} -> {A_producer.S_producer.ok, buffer.count_2},
+  {A_producer.buffer.produce, buffer.count_2} -> {A_producer.S_producer.ok, buffer.count_3},
+  {A_producer.buffer.produce, buffer.count_3} -> {A_producer.S_producer.ok, buffer.count_4},
+  {A_producer.buffer.consume, buffer.count_1} -> {A_producer.S_producer.ok, buffer.count_0},
+  {A_producer.buffer.consume, buffer.count_2} -> {A_producer.S_producer.ok, buffer.count_1},
+  {A_producer.buffer.consume, buffer.count_3} -> {A_producer.S_producer.ok, buffer.count_2},
+  {A_producer.buffer.consume, buffer.count_4} -> {A_producer.S_producer.ok, buffer.count_3},
+};
+
+server: S_consumer (servers mutexA: semaphoreM, mutexB: semaphoreM, emptyA: semaphoreM, emptyB: semaphoreM, fullA: semaphoreM, fullB: semaphoreM, bufferA: buffer, bufferB: buffer; agents A_consumer),
+services {ok},
+states {s0_fullA_p, s12_emptyA_v, s15_fullB_p, s18_mutexB_p, s21_bufferB_consume, s24_mutexB_v, s27_emptyB_v, s3_mutexA_p, s6_bufferA_consume, s9_mutexA_v},
+actions {
+  {A_consumer.S_consumer.ok, S_consumer.s0_fullA_p} -> {A_consumer.mutexA.p, S_consumer.s3_mutexA_p},
+  {A_consumer.S_consumer.ok, S_consumer.s3_mutexA_p} -> {A_consumer.bufferA.consume, S_consumer.s6_bufferA_consume},
+  {A_consumer.S_consumer.ok, S_consumer.s6_bufferA_consume} -> {A_consumer.mutexA.v, S_consumer.s9_mutexA_v},
+  {A_consumer.S_consumer.ok, S_consumer.s9_mutexA_v} -> {A_consumer.emptyA.v, S_consumer.s12_emptyA_v},
+  {A_consumer.S_consumer.ok, S_consumer.s12_emptyA_v} -> {A_consumer.fullB.p, S_consumer.s15_fullB_p},
+  {A_consumer.S_consumer.ok, S_consumer.s15_fullB_p} -> {A_consumer.mutexB.p, S_consumer.s18_mutexB_p},
+  {A_consumer.S_consumer.ok, S_consumer.s18_mutexB_p} -> {A_consumer.bufferB.consume, S_consumer.s21_bufferB_consume},
+  {A_consumer.S_consumer.ok, S_consumer.s21_bufferB_consume} -> {A_consumer.mutexB.v, S_consumer.s24_mutexB_v},
+  {A_consumer.S_consumer.ok, S_consumer.s24_mutexB_v} -> {A_consumer.emptyB.v, S_consumer.s27_emptyB_v},
+  {A_consumer.S_consumer.ok, S_consumer.s27_emptyB_v} -> {A_consumer.fullA.p, S_consumer.s0_fullA_p},
+};
+
+server: S_producer (servers mutexA: semaphoreM, mutexB: semaphoreM, emptyA: semaphoreM, emptyB: semaphoreM, fullA: semaphoreM, fullB: semaphoreM, bufferA: buffer, bufferB: buffer; agents A_producer),
+services {ok},
+states {s0_emptyA_p, s12_fullA_v, s15_emptyB_p, s18_mutexB_p, s21_bufferB_produce, s24_mutexB_v, s27_fullB_v, s3_mutexA_p, s6_bufferA_produce, s9_mutexA_v},
+actions {
+  {A_producer.S_producer.ok, S_producer.s0_emptyA_p} -> {A_producer.mutexA.p, S_producer.s3_mutexA_p},
+  {A_producer.S_producer.ok, S_producer.s3_mutexA_p} -> {A_producer.bufferA.produce, S_producer.s6_bufferA_produce},
+  {A_producer.S_producer.ok, S_producer.s6_bufferA_produce} -> {A_producer.mutexA.v, S_producer.s9_mutexA_v},
+  {A_producer.S_producer.ok, S_producer.s9_mutexA_v} -> {A_producer.fullA.v, S_producer.s12_fullA_v},
+  {A_producer.S_producer.ok, S_producer.s12_fullA_v} -> {A_producer.emptyB.p, S_producer.s15_emptyB_p},
+  {A_producer.S_producer.ok, S_producer.s15_emptyB_p} -> {A_producer.mutexB.p, S_producer.s18_mutexB_p},
+  {A_producer.S_producer.ok, S_producer.s18_mutexB_p} -> {A_producer.bufferB.produce, S_producer.s21_bufferB_produce},
+  {A_producer.S_producer.ok, S_producer.s21_bufferB_produce} -> {A_producer.mutexB.v, S_producer.s24_mutexB_v},
+  {A_producer.S_producer.ok, S_producer.s24_mutexB_v} -> {A_producer.fullB.v, S_producer.s27_fullB_v},
+  {A_producer.S_producer.ok, S_producer.s27_fullB_v} -> {A_producer.emptyA.p, S_producer.s0_emptyA_p},
+};
+
+server: S_readerA (servers mutexA: semaphoreM, mutexB: semaphoreM, emptyA: semaphoreM, emptyB: semaphoreM, fullA: semaphoreM, fullB: semaphoreM, bufferA: buffer, bufferB: buffer; agents A_readerA),
+services {ok},
+states {s0_mutexA_p, s3_mutexA_v},
+actions {
+  {A_readerA.S_readerA.ok, S_readerA.s0_mutexA_p} -> {A_readerA.mutexA.v, S_readerA.s3_mutexA_v},
+  {A_readerA.S_readerA.ok, S_readerA.s3_mutexA_v} -> {A_readerA.mutexA.p, S_readerA.s0_mutexA_p},
+};
+
+server: S_readerB (servers mutexA: semaphoreM, mutexB: semaphoreM, emptyA: semaphoreM, emptyB: semaphoreM, fullA: semaphoreM, fullB: semaphoreM, bufferA: buffer, bufferB: buffer; agents A_readerB),
+services {ok},
+states {s0_mutexB_p, s3_mutexB_v},
+actions {
+  {A_readerB.S_readerB.ok, S_readerB.s0_mutexB_p} -> {A_readerB.mutexB.v, S_readerB.s3_mutexB_v},
+  {A_readerB.S_readerB.ok, S_readerB.s3_mutexB_v} -> {A_readerB.mutexB.p, S_readerB.s0_mutexB_p},
+};
+
+agents A_consumer, A_producer, A_readerA, A_readerB;
+
+servers S_consumer, S_producer, S_readerA, S_readerB, mutexA: semaphoreM, mutexB: semaphoreM, emptyA: semaphoreM, emptyB: semaphoreM, fullA: semaphoreM, fullB: semaphoreM, bufferA: buffer, bufferB: buffer;
+
+init -> {
+  mutexA(S_consumer,S_producer,S_readerA,S_readerB,A_consumer,A_producer,A_readerA,A_readerB).state_1,
+  mutexB(S_consumer,S_producer,S_readerA,S_readerB,A_consumer,A_producer,A_readerA,A_readerB).state_1,
+  emptyA(S_consumer,S_producer,S_readerA,S_readerB,A_consumer,A_producer,A_readerA,A_readerB).state_4,
+  emptyB(S_consumer,S_producer,S_readerA,S_readerB,A_consumer,A_producer,A_readerA,A_readerB).state_4,
+  fullA(S_consumer,S_producer,S_readerA,S_readerB,A_consumer,A_producer,A_readerA,A_readerB).state_0,
+  fullB(S_consumer,S_producer,S_readerA,S_readerB,A_consumer,A_producer,A_readerA,A_readerB).state_0,
+  bufferA(S_consumer,S_producer,S_readerA,S_readerB,A_consumer,A_producer,A_readerA,A_readerB).count_0,
+  bufferB(S_consumer,S_producer,S_readerA,S_readerB,A_consumer,A_producer,A_readerA,A_readerB).count_0,
+  S_consumer(mutexA,mutexB,emptyA,emptyB,fullA,fullB,bufferA,bufferB,A_consumer).s0_fullA_p,
+  A_consumer.fullA.p,
+  S_producer(mutexA,mutexB,emptyA,emptyB,fullA,fullB,bufferA,bufferB,A_producer).s0_emptyA_p,
+  A_producer.emptyA.p,
+  S_readerA(mutexA,mutexB,emptyA,emptyB,fullA,fullB,bufferA,bufferB,A_readerA).s0_mutexA_p,
+  A_readerA.mutexA.p,
+  S_readerB(mutexA,mutexB,emptyA,emptyB,fullA,fullB,bufferA,bufferB,A_readerB).s0_mutexB_p,
+  A_readerB.mutexB.p,
+}.
+
